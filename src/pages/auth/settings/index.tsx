@@ -5,6 +5,9 @@ export const Settings = () => {
     <div className="h-full flex">
       <nav className="pt-4 pl-4">
         <div className="flex flex-col gap-3">
+          <Link to="accountprivacy" className="text-pink-300">
+            Account Privacy
+          </Link>
           <Link to="updatelogin" className="text-pink-300">
             Update Login
           </Link>

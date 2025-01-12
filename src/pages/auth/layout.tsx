@@ -12,7 +12,7 @@ export const Layout = () => {
         { name: 'Messages', href: '/profile/messages' },
     ];
     const navigate = useNavigate()
-    const { data, loading } = useHttpQuery<IResponse>("/verify")
+    const { data, loading, refetch } = useHttpQuery<IResponse>("/verify")
     const [logout] = useHttpMutation<IResponse>(() => navigate('/'))
     if (loading) {
         return <p>Loading...</p>
@@ -42,7 +42,7 @@ export const Layout = () => {
 
             <main className="container mx-auto px-4 py-6">
                 <Outlet
-                    context={{ user: data.user }}
+                    context={{ user: data.user, refetch }}
                 />
             </main>
         </div>

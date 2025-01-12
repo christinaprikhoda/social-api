@@ -6,6 +6,7 @@ import { Profile } from "../pages/auth/profile";
 import { Settings } from "../pages/auth/settings";
 import { UpdateLogin } from "../pages/auth/settings/components/updateLogin";
 import { UpdatePassword } from "../pages/auth/settings/components/updatePassword";
+import { AccountPrivacy } from "../pages/auth/settings/components/accountPrivacy";
 export const routes = createBrowserRouter([
   { path: "", element: <Login /> },
   { path: "signup", element: <Signup /> },
@@ -20,6 +21,7 @@ export const routes = createBrowserRouter([
         children: [
           { path: "updatelogin", element: <UpdateLogin /> },
           { path: "updatepassword", element: <UpdatePassword /> },
+          { path: "accountprivacy", element: <AccountPrivacy /> },
         ],
       },
     ],

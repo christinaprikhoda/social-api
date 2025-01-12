@@ -4,6 +4,10 @@ export interface IUser {
     surname: string
     login: string
     password: string
+    cover: string
+    picture: string
+    followers: IUser[]
+    following: IUser[]
 }
 
 export interface IResponse {
@@ -16,4 +20,5 @@ export type IAuth = Pick<IUser, 'login' | 'password'>
 
 export interface IContext {
     user: null | IUser
+    refetch: () => void
 }
