@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { IContext, IResponse } from "../../../../helpers/types";
 import { useRef, useState } from "react";
 import { Http } from "../../../../helpers/api";
@@ -20,6 +20,8 @@ export const ProfileHeader = () => {
     };
   };
 
+  console.log(user);
+
   const handleUpload = () => {
     const form = new FormData();
     const file = photo.current?.files?.[0];
@@ -37,7 +39,7 @@ export const ProfileHeader = () => {
         <div className="flex items-center gap-6 mb-6">
           <img
             onClick={() => photo.current?.click()}
-            className="w-28 h-28 rounded-full border-4 border-blue-600 shadow-md"
+            className="w-28 h-28 rounded-full border-4 border-blue-600 shadow-md object-cover"
             src={
               user.picture
                 ? BASE_URL + user.picture
@@ -91,16 +93,25 @@ export const ProfileHeader = () => {
             <p className="text-sm font-bold text-blue-400">
               {user.followers.length || 0}
             </p>
-            <p className="text-gray-400 text-sm">Followers</p>
+            <p className="text-gray-400 text-sm">
+              <Link to="followers" className="text-pink-300">
+                Followers
+              </Link>
+            </p>
           </div>
           <div className="flex flex-col">
+            
             <p className="text-sm font-bold text-blue-400">
               {user.following.length || 0}
             </p>
-            <p className="text-gray-400 text-sm">Following</p>
+            <p className="text-gray-400 text-sm">
+              <Link to="following" className="text-pink-300">
+                Following
+              </Link>
+            </p>
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-bold text-blue-400">0</p>
+            <p className="text-sm font-bold text-blue-400">{0}</p>
             <p className="text-gray-400 text-sm">Posts</p>
           </div>
         </div>

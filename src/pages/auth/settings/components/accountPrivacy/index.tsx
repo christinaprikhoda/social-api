@@ -1,7 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Http } from "../../../../../helpers/api";
+
+interface IUserResponse {
+  user: {
+    isPrivate: number
+  }
+}
 
 export const AccountPrivacy = () => {
   const [isPrivate, setIsPrivate] = useState<boolean>(false);
+
+  useEffect(() => {
+
+    const fetPrivacyStatus = async () => {
+      const res = await Http.get<IUserResponse>("/verify")
+      console.log(res)
+      setIsPrivate(Boolean(res.data.user.isPrivate))
+    }
+
+    fetPrivacyStatus()
+  }, [])
+
+  const handlePrivacy =  async() => {
+    await Http.patch("/account/set", {isPrivate: !isPrivate ? 1 : 0})
+    setIsPrivate(!isPrivate)
+  }
 
   return (
     <div className="w-full bg-gray-900 p-6 rounded-lg">
@@ -15,7 +38,7 @@ export const AccountPrivacy = () => {
 
         {/* Switch Button */}
         <button
-          onClick={() => setIsPrivate(!isPrivate)}
+          onClick={handlePrivacy}
           className={`
             relative inline-flex h-6 w-11 items-center rounded-full 
             transition-colors duration-300 focus:outline-none

@@ -2,7 +2,7 @@ import { Http } from "../../../../helpers/api";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../../../helpers/constans";
 import { Post } from "./post";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { IContext } from "../../../../helpers/types";
 
 interface IPosts {
@@ -15,27 +15,46 @@ interface IPostsResponse extends IPosts {
   payload: IPosts[];
 }
 
+interface IProfileResponse extends IPosts {
+  payload: {
+    posts: IPosts[];
+  };
+}
+
 export const Gallery = () => {
-  const { refetch } = useOutletContext<IContext>();
+  const { user, refetch } = useOutletContext<IContext>();
   const [data, setData] = useState<IPosts[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { id } = useParams();
+
+  const isOwnProfileId = !id || user?.id.toString() === id;
+
+  const endpoint = isOwnProfileId ? "/posts" : `/account/${id}`;
+  console.log("Fetching from endpoint:", endpoint);
 
   const fetchPosts = async () => {
-    const res = await Http.get<IPostsResponse>("/posts");
-    setData(res.data.payload.reverse());
+    if(isOwnProfileId){
+      const res = await Http.get<IPostsResponse>(endpoint);
+      setData([...res.data.payload.reverse()])
+    } else {
+      const res = await Http.get<IProfileResponse>(endpoint);
+      setData([...res.data.payload.posts.reverse()])
+    }
     setIsLoading(false);
   };
 
   useEffect(() => {
     fetchPosts();
-  }, []);
-
+  }, [id, isOwnProfileId]);
 
   useEffect(() => {
     fetchPosts();
   }, [refetch]);
+
   const handleDelete = (id: string) => {
-    setData(data.filter((post) => post.id !== id));
+    if (isOwnProfileId) {
+      setData(data.filter((post) => post.id !== id));
+    }
   };
 
   if (isLoading) {
@@ -47,8 +66,6 @@ export const Gallery = () => {
       </div>
     );
   }
-
-  console.log(data);
 
   return (
     <div className="w-full bg-gray-900 py-8">

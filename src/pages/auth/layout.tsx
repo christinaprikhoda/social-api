@@ -6,9 +6,9 @@ export const Layout = () => {
 
     const links = [
         { name: 'Home', href: '/profile' },
+        { name: 'Requests', href: '/profile/requests' },
         { name: 'Settings', href: '/profile/settings' },
-        { name: 'Followers', href: '/profile/followers' },
-        { name: 'Followings', href: '/profile/followings' },
+        // { name: 'Followers', href: '/profile/followers' },
         { name: 'Messages', href: '/profile/messages' },
     ];
     const navigate = useNavigate()

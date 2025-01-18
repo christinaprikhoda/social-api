@@ -7,6 +7,10 @@ import { Settings } from "../pages/auth/settings";
 import { UpdateLogin } from "../pages/auth/settings/components/updateLogin";
 import { UpdatePassword } from "../pages/auth/settings/components/updatePassword";
 import { AccountPrivacy } from "../pages/auth/settings/components/accountPrivacy";
+import { Account } from "../pages/auth/account";
+import { Following } from "../pages/auth/profile/components/following";
+import { Followers } from "../pages/auth/profile/components/followers";
+import { Requests } from "../pages/auth/settings/components/requests";
 export const routes = createBrowserRouter([
   { path: "", element: <Login /> },
   { path: "signup", element: <Signup /> },
@@ -15,6 +19,9 @@ export const routes = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "", element: <Profile /> },
+      { path: "following", element: <Following /> },
+      { path: "followers", element: <Followers /> },
+      {path: "requests", element: <Requests />},
       {
         path: "settings",
         element: <Settings />,
@@ -24,6 +31,7 @@ export const routes = createBrowserRouter([
           { path: "accountprivacy", element: <AccountPrivacy /> },
         ],
       },
+      { path: ":id", element: <Account /> },
     ],
   },
 ]);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 import { Http } from "../../../../helpers/api";
 
@@ -9,21 +9,22 @@ interface IPost {
   picture: string;
   title: string;
   baseUrl: string;
-  onDelete: (id: string) => void
+  onDelete: (id: string) => void;
 }
 
 export const Post = ({ id, picture, title, baseUrl, onDelete }: IPost) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const handleDelete = () => {
-    Http.delete("/posts/" + id)
-    onDelete(id)
-  }
+    Http.delete("/posts/" + id);
+    onDelete(id);
+  };
 
   return (
     <div
       key={id}
-      className="group relative aspect-square bg-gray-800 rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition-all duration-300 border border-gray-800 hover:border-gray-700"
+      className="group relative bg-gray-800 rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition-all duration-300 border border-gray-800 hover:border-gray-700"
     >
       <button
         onClick={() => setModalIsOpen(true)}
@@ -84,7 +85,10 @@ export const Post = ({ id, picture, title, baseUrl, onDelete }: IPost) => {
                 >
                   Cancel
                 </button>
-                <button  onClick={handleDelete} className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200">
+                <button
+                  onClick={handleDelete}
+                  className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200"
+                >
                   Delete
                 </button>
               </div>
@@ -93,16 +97,57 @@ export const Post = ({ id, picture, title, baseUrl, onDelete }: IPost) => {
         </div>
       </Modal>
 
-      <img
-        src={baseUrl + picture}
-        alt={title}
-        className="w-full h-full object-cover"
-      />
-      {title && (
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
-          <p className="text-white text-sm font-medium">{title}</p>
+      <div className="flex flex-col">
+        <div className="relative">
+          <img
+            src={baseUrl + picture}
+            alt={title}
+            className="w-full aspect-square object-cover"
+          />
+          {title && (
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
+              <p className="text-white text-sm font-medium">{title}</p>
+            </div>
+          )}
         </div>
-      )}
+
+        <div className="px-4 py-3 bg-gray-800 flex items-center">
+          <button 
+            onClick={() => setIsLiked(!isLiked)}
+            className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+          >
+            {isLiked ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-red-500"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-gray-300 hover:text-red-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

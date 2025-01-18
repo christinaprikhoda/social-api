@@ -10,6 +10,17 @@ export interface IUser {
     following: IUser[]
 }
 
+export interface IAccount extends IUser {
+    posts: unknown
+    isPrivate: number
+    connection: {
+        followsMe:boolean
+        following: boolean
+        requested: boolean
+    }
+
+}
+
 export interface IResponse {
     status: string
     message: string
@@ -20,5 +31,10 @@ export type IAuth = Pick<IUser, 'login' | 'password'>
 
 export interface IContext {
     user: null | IUser
+    refetch: () => void
+}
+
+export interface IAccountContext{
+    account: IAccount
     refetch: () => void
 }
